@@ -30,9 +30,9 @@ Lower = values[4]
 Numbers = values[5]
 Symbols = values[6]
 
-def get5letters(values): #This is a function, used for cleaning up code you use a lot
-  keylist = list([])
-  keySep = list([])
+def get5(values): #This is a function, used for cleaning up code you use a lot
+  keylist = []
+  keySep = []
   #for _ in range(times): # This many keys you make
   for _ in range(parts): #Do each part n times
     randomkey(values, keylist)
@@ -64,16 +64,16 @@ def randomkey(values, keylist):
     keylist.append(symbol)
   return keylist 
 
-def get5lettersdash(): #Very similar to the function prior, except this adds the seperator to the end
-  key = get5letters(values)
+def get5sep(seperator): #Generates a 5 letter combo with a seperator
+  key = get5(values)
   return f'{key}{seperator}'
 
-def makeKey(times):
-  wholekeys = list([])
+def makeKey(times, seperator):
+  wholekeys = []
   for _ in range(times):
-    key1 = get5lettersdash()
-    key2 = get5lettersdash()
-    key3 = get5letters(values)
+    key1 = get5sep(seperator)
+    key2 = get5sep(seperator)
+    key3 = get5(values)
     answerkey = f'{key1}{key2}{key3}'
     wholekeys.append(answerkey)
   return wholekeys
@@ -87,15 +87,15 @@ partcheck = isinstance(parts, int)
 if partcheck:
   if timecheck:
     sampleAnswer = makeKey(times)
-    finalKeylist = list([]) #I will put all the keys in here, then split it later on using :number
+    finalKeylist = [] #I will put all the keys in here, then split it later on using :number
     for i in range(times):
-        try:
-            i += 1
-            firstkey = f'{i}){sampleAnswer[i-1]}\n'
-            finalKeylist.append(firstkey)
-            print(finalKeylist)
-        except:
-            break
+      try:
+        i += 1
+        firstkey = f'{i}){sampleAnswer[i-1]}\n'
+        finalKeylist.append(firstkey)
+        print(finalKeylist)
+      except Exception:
+        break
 
     finalKeys = ' '.join([str(v) for v in finalKeylist])
     layout = [[sg.Text('Here are your keys!', size=(30, 2),
@@ -117,7 +117,3 @@ if partcheck:
 else:
   print("The following is wrong: The amount of parts you want is not an integer.")
 
-
-  #29/11 I added the option to choose from upper/lowercase numbers and letters, and a mixture of some or all of them. An example key is:
-  #G8A1Z2-S9O4G1-P9Y4U6
-  
