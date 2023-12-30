@@ -1,3 +1,9 @@
+"""
+I use this code to teach beginner students about data types, 
+loops, structures etc.. I used to use this code in my Summer School
+Python introductory course.
+"""
+
 number = 6
 word = 'Lemon'
 
@@ -12,13 +18,13 @@ print('\n')
 run = 1
 while run < 10:
     print(run)
-    run+=1
+    run += 1
 print('\n')
 
-shopList = ['lemon', 'tomatoes', 'chair', 'Halima'] #Array or list
+shopList = ['lemon', 'tomatoes', 'chair', 'Halima']  # Array or list
 
 print('\nshopList before: {}'.format(shopList))
-for i in range(4): #Remember that i can be anything
+for i in range(4):  # Remember that i can be anything
     shopList[i] = 'Bacon'
     i = i + 1
 
@@ -26,17 +32,19 @@ print('shopList after: {}'.format(shopList))
 
 print('\n')
 
-Halima = 11
-if Halima > 10:
-    print('Halima is over 10 years old')
-elif Halima == 9:
-    print("Halima is 9")
+name = 11
+if name > 10:
+    print('Joe is over 10 years old')
+elif name == 9:
+    print("Joe is 9")
 else:
-    print("Halima is under 9")
+    print("Joe is under 9")
 
 
 print('\n')
-class Vehicle: 
+
+
+class Vehicle:
     def __init__(self, tyres, weight):
         self.tyres = tyres
         self.weight = weight
@@ -44,7 +52,7 @@ class Vehicle:
     def turn(self, amount):
         return ("The car has turned {} steps".format(amount))
 
-    def turnOnLight(lightNum):
+    def turnOnLight(lightNum):  # Why does this not work?
         return ('The car has turned on {} lights'.format(lightNum))
 
 
