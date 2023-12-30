@@ -126,7 +126,9 @@ while True:
                             lambda name: rooms["setups"][name]["players"] == text, rooms["setups"].keys())
                         randomroomname = random.choice(list(filteredRooms))
                         chatbox.send_keys(
-                            f"Maybe try {randomroomname}! It has code {rooms['setups'][randomroomname]['code']} and requires {rooms['setups'][randomroomname]['players']} players"
+                            f"""Maybe try {randomroomname}! It has code {rooms['setups'][randomroomname]['code']} and requires 
+                            {rooms['setups'][randomroomname]['players']} players. You can find out more at 
+                            https://mafiagg.fandom.com/wiki/{randomroomname.replace(' ', '_')}"""
                         )
                         sendButton.click()
                     except ValueError:
@@ -148,7 +150,7 @@ while True:
                 except:
                     continue
 
-    time.sleep(0.15)
+    time.sleep(0.5)
 
 # To do:
 
