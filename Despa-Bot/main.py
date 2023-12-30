@@ -20,7 +20,7 @@ def main():
     link = input("Enter link to join: ")
 
     # Add hosts here, case sensitive
-    allowedHosts = ['_Sip_', "Despa1r"]
+    allowedHosts = ['_Sip_', "Lagmaker"]
     service = ChromeService()
     driver = webdriver.Chrome(service=service)
     driver.implicitly_wait(1)
@@ -95,13 +95,16 @@ def main():
             # Grabs the last 3 messages in case chat is fast
             print(messageList[-1].text)
             if messageList[-1].text.startswith(tuple(allowedHosts)):
+                if "/help" in messageList[-1].text:
+                    chatbox.send_keys(
+                        f"Commands: /time -> Tells you how long I've been alive for, /roles -> Get role website, /repeat, /ping -> Pong, /ranroom <Players> -> Give a random room with a optional amount of players, /randumbs -> Gives a randumbs room")
+                    sendButton.click()
                 if "/time" in messageList[-1].text:
                     end = time.time()
                     chatbox.send_keys(
                         f"I've been up for -> {seconds_to_hms(end-start)}")
                     sendButton.click()
                 if "/roles" in messageList[-1].text:
-                    end = time.time()
                     chatbox.send_keys(
                         f"For a list of roles, refer to https://mafia.gg/guide/roles")
                     sendButton.click()
@@ -159,6 +162,6 @@ if __name__ == "__main__":
     main()
 
     # To do:
-    # Give the bot a website link to join
+    # ---Give the bot a website link to join--- COMPLETE
     # Host lobbies
     # Get user info
