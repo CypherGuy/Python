@@ -4,10 +4,14 @@ import json
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium import webdriver
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # https://mafia.gg/api/users/{id}
 
-with open("Despa-Bot/types.json") as f:
+with open("types.json") as f:
     rooms: dict = json.load(f)
 
 allowedHosts = ['_Sip_', "Cha0s"]  # Add hosts here, case sensitive
@@ -25,7 +29,7 @@ username = driver.find_element(
 username.send_keys("Despa1r")
 password = driver.find_element(
     By.XPATH, "/html/body/div[1]/div/div/main/div/form/fieldset/div[2]/input")
-password.send_keys("Letmein123.")
+password.send_keys(os.getenv("PASSWORD"))
 # Click the login button
 login_button = driver.find_element(
     By.XPATH, "/html/body/div[1]/div/div/main/div/form/fieldset/button/span[1]")
