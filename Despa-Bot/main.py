@@ -1,11 +1,9 @@
 import random
 import time
 import json
-from turtle import setup
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service as ChromeService
 from selenium import webdriver
-import datetime
 
 # https://mafia.gg/api/users/{id}
 
