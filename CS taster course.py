@@ -7,7 +7,6 @@ try:
 except:
     print("The try except loop has broken because a word and a number can't be multiplied.")
 
-
 print('\n')
 
 run = 1
