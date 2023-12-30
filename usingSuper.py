@@ -9,10 +9,13 @@ class Rectangle:
     def perimeter(self):
         return 2 * self.length + 2 * self.width
 
-#Square is a subclass
+# Square is a subclass
+
+
 class Square(Rectangle):
     def __init__(self, length):
         super().__init__(length=length, width=length)
+
 
 class Cube(Square):
     def surface_area(self):
@@ -23,6 +26,7 @@ class Cube(Square):
         face_area = super().area()
         return face_area * self.length
 
+
 class Triangle:
     def __init__(self, base, height, **listComponents):
         self.base = base
@@ -31,6 +35,7 @@ class Triangle:
 
     def tri_area(self):
         return 0.5 * self.base * self.height
+
 
 class RightPyramid(Square, Triangle):
     def __init__(self, base, slant_height, **listComponents):
@@ -49,6 +54,3 @@ class RightPyramid(Square, Triangle):
         base_area = super().area()
         triangle_area = super().tri_area()
         return triangle_area * 4 + base_area
-
-
-
