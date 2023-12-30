@@ -19,15 +19,13 @@ def main():
 
     link = input("Enter link to join: ")
 
-    allowedHosts = ['_Sip_']  # Add hosts here, case sensitive
+    # Add hosts here, case sensitive
+    allowedHosts = ['_Sip_', "Despa1r"]
     service = ChromeService()
     driver = webdriver.Chrome(service=service)
     driver.implicitly_wait(1)
 
-    if not link:
-        driver.get("https://mafia.gg/login")
-    else:
-        driver.get(link)
+    driver.get("https://mafia.gg/login")
     driver.maximize_window()
 
     # Find the input box by its id
@@ -49,14 +47,17 @@ def main():
             if name.text in allowedHosts:
                 name.click()  # Join lobby
                 break
+    else:
+        driver.get(link)
 
     start = time.time()
-    # As a check
-    driver.get(link)
-    time.sleep(3)
 
-    chatbox = driver.find_element(
-        By.XPATH, "/html/body/div[1]/main/div/div[3]/div[3]/form/input")
+    try:
+        chatbox = driver.find_element(
+            By.CSS_SELECTOR, "body > div.main > main > div > div.game-center > div.game-chat-bar > form > input[type=text]")
+    except:
+        chatbox = driver.find_element(
+            By.XPATH, "/html/body/div[1]/main/div/div[3]/div[3]/form/input")
     sendButton = driver.find_element(
         By.XPATH, "/html/body/div[1]/main/div/div[3]/div[3]/form/button/span[1]")
 
@@ -64,18 +65,17 @@ def main():
         By.XPATH, "/html/body/div[1]/main/div/div[3]/div[3]/form/button")
 
     messageList = driver.find_elements(
-        By.CLASS_NAME, "game-chronicle-chat-inner")
+        By.CLASS_NAME, "game-chronicle-chat-1nner muted")
+
+    print(messageList)
 
     startmsgcount = len(messageList)
-
-    states = {"playered": False}
 
     def seconds_to_hms(seconds):
         hours = seconds // 3600
         minutes = (seconds % 3600) // 60
         seconds = seconds % 60
         return f"{int(hours):02d}:{int(minutes):02d}:{int(seconds):02d}"
-
     while True:
 
         try:
@@ -88,11 +88,13 @@ def main():
             pass
 
         messageList = driver.find_elements(
-            By.CLASS_NAME, "game-chronicle-chat-inner")
+            By.CLASS_NAME, "muted")
+        print([
+            i.text for i in messageList])
         if len(messageList) > startmsgcount:  # New message sent
+            # Grabs the last 3 messages in case chat is fast
             print(messageList[-1].text)
             if messageList[-1].text.startswith(tuple(allowedHosts)):
-                print(messageList[-1].text)
                 if "/time" in messageList[-1].text:
                     end = time.time()
                     chatbox.send_keys(
@@ -103,21 +105,12 @@ def main():
                     chatbox.send_keys(
                         f"For a list of roles, refer to https://mafia.gg/guide/roles")
                     sendButton.click()
-                if "/ready" in messageList[-1].text and states["playered"] == False:
-                    time.sleep(random.random())
-                    readyButton.click()
-                    states["playered"] = True
-                if "/unready" in messageList[-1].text and states["playered"] == True:
-                    time.sleep(random.random())
-                    readyButton.click()
-                    states["playered"] = False
                 if "/repeat" in messageList[-1].text:
                     try:
                         text = messageList[-1].text.split(" ", 1)[1]
                     except IndexError:
                         continue
                     if text:
-                        print(text)
                         chatbox.send_keys(text)
                         sendButton.click()
                 if "/ping" in messageList[-1].text:
@@ -135,7 +128,8 @@ def main():
                                 continue
                             filteredRooms = filter(
                                 lambda name: rooms["setups"][name]["players"] == text, rooms["setups"].keys())
-                            randomroomname = random.choice(list(filteredRooms))
+                            randomroomname = random.choice(
+                                list(filteredRooms))
                             chatbox.send_keys(
                                 f"""Maybe try {randomroomname}! It has code {rooms['setups'][randomroomname]['code']} and requires {rooms['setups'][randomroomname]['players']} players. You can find out more at  https://mafiagg.fandom.com/wiki/{randomroomname.replace(' ', '_')}"""
                             )
@@ -158,7 +152,6 @@ def main():
                         sendButton.click()
                     except:
                         continue
-
         time.sleep(0.5)
 
 
