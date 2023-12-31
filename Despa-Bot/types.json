@@ -85,7 +85,7 @@
             "start": "dawnStart",
             "players": "7"
         },
-        "Guns and Hookers": {
+        "Guns & Hookers": {
             "code": "19a1b7a1b69a1b75a1b57a3",
             "start": "off",
             "players": "7"
@@ -148,6 +148,11 @@
         "Janitorial": {
             "code": "75a1b12a1b73a1b72a1b32a1b36a1b57a3b7a1",
             "start": "off",
+            "players": "10"
+        },
+        "Reverse": {
+            "code": "75a1b87a1b29a1b106a5b56a1b20a1",
+            "start": "dawnStart",
             "players": "10"
         },
         "springitorial": {
