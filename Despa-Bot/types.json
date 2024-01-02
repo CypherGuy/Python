@@ -1,4 +1,7 @@
 {
+    "whitelist": {
+        "users": ["_Sip_", "Lagmaker", "getdropkicked"]
+    },
     "setups": {
         "Coffee Break": {
             "code": "93a1b75a1",
@@ -488,5 +491,12 @@
             "1625029370a21b1625030984a7b1625031283a1",
             "1625029370a22b1625030984a7b1625031283a1"
         ]
+    },
+    "records": {
+        "5a1b61a1b19a1": {
+            "town": 0,
+            "mafia": 0,
+            "3p": 0
+        }
     }
 }
