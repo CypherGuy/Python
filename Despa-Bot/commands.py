@@ -3,7 +3,7 @@
 import time
 import sys
 import random
-from helper_functions import current_time, get_elements, find_ready_button, load_rooms, send_message
+from helper_functions import seconds_to_hms, find_ready_button, load_rooms, send_message, current_time
 
 COMMAND = "\033[0;36m"
 RESET = "\033[0m"
@@ -20,31 +20,26 @@ commands = {
 }
 
 
-def process_commands(driver, message_list, cogs, allowed_hosts, commands, starttime):
+def process_commands(driver, message_list, cogs, allowed_hosts, starttime, commandList: dict):
     rooms = load_rooms("types.json")
     last_message = message_list[-1].text.lower()
+    print(f"{COMMAND}[{current_time()}]{RESET} {last_message}")
 
     if "despair" in last_message or "despa1r" in last_message and not last_message.startswith("despa1r"):
-        if last_message.startswith("hot655"):
-            send_message(driver, "Hello Hot, it's Despair :D ")
-        else:
-            send_message(driver, "Despair? That must be me. What's up?")
+        send_message(driver, "Despair? That must be me. What's up?")
 
     if message_list[-1].text.startswith(tuple(allowed_hosts)):
+        last_message = message_list[-1].text
         if "/help" in last_message:
             send_message(
-                driver, f"Commands: {' ||| '.join([f'{i}: {commands[i]}' for i in commands])}")
-
-        elif "/fraudwatch" in last_message:
-            send_message(
-                driver, "List of frauds: Go and jo, Manchester United")
+                driver, f"Commands: {' ||| '.join([f'{i}: {commandList[i]}' for i in commandList])}")
 
         elif "/toggledeath" in last_message:
-            cogs["checkdeath"] = not cogs["checkdeath"]
+            cogs["check_death"] = not cogs["check_death"]
             send_message(driver, "Should be inverted.")
 
-        elif "/suicide" in last_message and last_message.startswith("_Sip_"):
-            send_message(driver, "Suiciding..")
+        elif "/kill" in last_message and last_message.startswith("_Sip_"):
+            send_message(driver, "Killing bot..")
             sys.exit()
 
         elif "/allies" in last_message and last_message.startswith("_Sip_"):
@@ -57,8 +52,19 @@ def process_commands(driver, message_list, cogs, allowed_hosts, commands, startt
                 elif action == "r":
                     allowed_hosts.remove(user)
                     send_message(driver, f"Removed {user} from allies")
-            except IndexError:
+            except:
                 send_message(driver, ' '.join(allowed_hosts))
+
+        elif "/ready" in last_message and last_message.startswith("_Sip_") and not cogs["playered"]:
+            if ready_button := find_ready_button(driver):
+                try:
+                    ready_button.click()
+                    cogs["playered"] = True
+                    send_message(driver, "I am a bot and I have readied up.")
+                except:
+                    send_message(driver, "Couldn't find the ready button")
+            else:
+                send_message(driver, "Ready button? Can't find it")
 
         elif "/unready" in last_message and last_message.startswith("_Sip_") and cogs["playered"]:
             if ready_button := find_ready_button(driver):
@@ -73,7 +79,7 @@ def process_commands(driver, message_list, cogs, allowed_hosts, commands, startt
         elif "/time" in last_message:
             end = time.time()
             send_message(
-                driver, f"I've been up for -> {current_time(end-starttime)}")
+                driver, f"I've been up for -> {seconds_to_hms(end-starttime)}")
 
         elif "/roles" in last_message:
             send_message(

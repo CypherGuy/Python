@@ -8,13 +8,14 @@ from dotenv import load_dotenv
 import os
 import selenium.common.exceptions
 
-from helper_functions import load_rooms, main_or_spec
+from helper_functions import detect_death, load_rooms, main_or_spec
 from commands import process_commands
 
 load_dotenv()
 
 lists = load_rooms("types.json")
-allowed_hosts = lists["whitelist"]
+allowed_hosts = lists["whitelist"]["users"]
+print(allowed_hosts)
 
 
 class MafiaBot:
@@ -80,10 +81,24 @@ class MafiaBot:
                 break
 
     def run_bot(self):
+
+        try:
+            host = self.driver.find_element(
+                By.XPATH, "/html/body/div[1]/main/div/div[2]/div[1]/div/div[2]/div/div[3]/div[2]/ul/li[1]")
+            print(f"Host: {host.text}")
+        except:
+            print("Host not found")
+            host = None
+
+        # Add lobby host as ally so they can run "host" commands
+        if host:
+            self.allowed_hosts.append(host.text)
+
         while True:
             try:
                 message_list = main_or_spec(self.driver)
                 if len(message_list) > 0 and "Despa1r" not in message_list[-1].text:
+                    # detect_death(self.driver, self.cogs)
                     process_commands(
                         self.driver, message_list, self.cogs, self.allowed_hosts, self.start_time, self.commands)
 
